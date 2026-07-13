@@ -42,6 +42,8 @@ const $$ = (s, c = document) => [...c.querySelectorAll(s)];
 (function heroTitle() {
   const t = $("[data-split]");
   if (!t) return;
+  if (t.dataset.typerInit) return; // защита от двойной инициализации (гонка двух циклов печати)
+  t.dataset.typerInit = "1";
   const PHRASES = [
     ["откуда виден", "завтрашний город"],
     ["где строится", "будущая Москва"],
@@ -122,6 +124,8 @@ const $$ = (s, c = document) => [...c.querySelectorAll(s)];
 (function heroFactRotator() {
   const box = $("#heroFact");
   if (!box) return;
+  if (box.dataset.rotatorInit) return; // защита от двойной инициализации
+  box.dataset.rotatorInit = "1";
   const numEl = box.querySelector(".fact__num");
   const labelEl = box.querySelector(".fact__label");
   const FACTS = [
