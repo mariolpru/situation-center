@@ -2,6 +2,37 @@
    Компоненты / блоки
    ========================================================================== */
 
+/* ---------- Лоадер: пульсирующие круги логотипа ---------- */
+.loader {
+  position: fixed; inset: 0; z-index: 200;
+  display: none; place-items: center;
+  background: var(--c-bg-dark);
+  transition: opacity .5s var(--ease-out), visibility .5s;
+}
+.js .loader { display: grid; }
+.loaded .loader { opacity: 0; visibility: hidden; pointer-events: none; }
+.loader__mark { /* центральный круг лого */
+  position: relative; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--c-red);
+  animation: loader-core 1.6s ease-in-out infinite;
+}
+.loader__mark::before,
+.loader__mark::after { /* расходящиеся кольца */
+  content: ""; position: absolute; inset: -14px;
+  border: 4px solid var(--c-red); border-radius: 50%;
+  animation: loader-ring 1.6s cubic-bezier(.22, 1, .36, 1) infinite;
+}
+.loader__mark::after { inset: -28px; border-width: 3px; animation-delay: .25s; }
+@keyframes loader-core { 50% { transform: scale(.82); } }
+@keyframes loader-ring {
+  0%   { transform: scale(.72); opacity: 0; }
+  45%  { opacity: 1; }
+  100% { transform: scale(1.25); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loader__mark, .loader__mark::before, .loader__mark::after { animation: none; }
+}
+
 /* ---------- Логотип ---------- */
 .logo { display: inline-flex; align-items: center; gap: 12px; color: #fff; }
 .logo__img { width: 249px; height: 61px; }
@@ -56,7 +87,7 @@
 .hero__map { position: absolute; inset: 0; z-index: 0; }
 .hero__map-img {
   position: absolute; inset: 0;
-  background: var(--c-bg-dark) url('../assets/img/moscow.png') center / cover no-repeat;
+  background: var(--c-bg-dark) url('../assets/img/moscow.webp') center / cover no-repeat;
 }
 /* Затемнение слева/снизу для читаемости заголовка и контента */
 .hero__map-img::after {

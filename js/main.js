@@ -9,6 +9,15 @@ const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const $  = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
 
+/* Лоадер: прячем по полной загрузке страницы (или максимум через 3.5с) */
+const ready = Promise.race([
+  new Promise(r => {
+    if (document.readyState === "complete") r();
+    else window.addEventListener("load", r, { once: true });
+  }),
+  new Promise(r => setTimeout(r, 3500)),
+]).then(() => { root.classList.add("loaded"); });
+
 /* ------------------------------------------------------------------ *
  * 1. Hero: генерация и пульсация точек на карте
  * ------------------------------------------------------------------ */
@@ -98,7 +107,8 @@ const $$ = (s, c = document) => [...c.querySelectorAll(s)];
   (async function intro() {
     inners.forEach(el => { el.textContent = ""; });
     t.style.opacity = 1;
-    await sleep(350);
+    await ready;      // печать начинается после скрытия лоадера
+    await sleep(450);
     for (let n = 0; n < inners.length; n++) await type(inners[n], first[n]);
     setInterval(swap, PERIOD);
   })();

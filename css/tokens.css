@@ -24,8 +24,8 @@
   --c-footer: #08131b;
 
   /* --- Типографика --- */
-  /* Локальные шрифты из макета (css/fonts.css) */
-  --font-display: "TT Bluescreens Trial Variable", "TT Bluescreens Trial", "Arial Narrow", sans-serif;
+  /* Локальные шрифты из макета (css/fonts.css); статические начертания — фикс курсива в Safari */
+  --font-display: "TT Bluescreens Trial", "Arial Narrow", sans-serif;
   --font-text: "Golos Text", "Helvetica Neue", Arial, sans-serif;
 
   /* Плавные размеры: min → max между mobile(375) и desktop(1440). Максимумы = точные из Figma */

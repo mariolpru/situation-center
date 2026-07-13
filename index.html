@@ -4,13 +4,23 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ситуационный центр — прототип с анимациями</title>
-  <link rel="stylesheet" href="css/fonts.css?v=2" />
-  <link rel="stylesheet" href="css/tokens.css?v=2" />
-  <link rel="stylesheet" href="css/base.css?v=2" />
-  <link rel="stylesheet" href="css/components.css?v=2" />
-  <link rel="stylesheet" href="css/layout.css?v=2" />
+  <link rel="stylesheet" href="css/fonts.css?v=3" />
+  <link rel="stylesheet" href="css/tokens.css?v=3" />
+  <link rel="stylesheet" href="css/base.css?v=3" />
+  <link rel="stylesheet" href="css/components.css?v=3" />
+  <link rel="stylesheet" href="css/layout.css?v=3" />
 </head>
 <body>
+
+  <!-- ===== Лоадер: пульсирующие круги логотипа ===== -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <span class="loader__mark"></span>
+  </div>
+  <script>
+    /* показываем лоадер сразу и страхуемся: максимум 4с, даже если JS-модуль не загрузится */
+    document.documentElement.classList.add('js');
+    setTimeout(function () { document.documentElement.classList.add('loaded'); }, 4000);
+  </script>
 
   <!-- ===== Компактная липкая шапка (появляется на скролле) ===== -->
   <header class="topbar" id="topbar" data-anim="topbar">
@@ -88,13 +98,13 @@
           <!-- Слои этажей (реальные изометрии из Figma): анимируются независимо (y + opacity) -->
           <div class="building" id="building" data-active="0">
             <div class="floor floor--ground" data-floor="1">
-              <img src="assets/img/floor-ground.png" alt="Первый этаж с садом" loading="lazy" />
+              <img src="assets/img/floor-ground.webp" alt="Первый этаж с садом" loading="lazy" />
             </div>
             <div class="floor floor--living" data-floor="2">
-              <img src="assets/img/floor-living.png" alt="Жилой этаж" loading="lazy" />
+              <img src="assets/img/floor-living.webp" alt="Жилой этаж" loading="lazy" />
             </div>
             <div class="floor floor--roof" data-floor="3">
-              <img src="assets/img/floor-roof.png" alt="Крыша с террасой и башней" loading="lazy" />
+              <img src="assets/img/floor-roof.webp" alt="Крыша с террасой и башней" loading="lazy" />
             </div>
           </div>
 
@@ -113,7 +123,7 @@
       <div class="container">
         <h2 class="eyebrow events__title">События</h2>
         <div class="events__grid">
-          <a class="ev-card" data-anim="fade-up" href="#" style="--img:url('../assets/img/event-1.png')">
+          <a class="ev-card" data-anim="fade-up" href="#" style="--img:url('../assets/img/event-1.webp')">
             <svg class="ev-card__hover" viewBox="0 0 329 429" preserveAspectRatio="none" aria-hidden="true">
               <circle class="rp rp--fill" cx="40.78" cy="392.5" r="295.4" />
               <circle class="rp rp--ring" cx="40.78" cy="392.5" r="425.75" />
@@ -121,7 +131,7 @@
             <span class="ev-card__date">Скоро</span>
             <span class="ev-card__label">Москва<br>2040</span>
           </a>
-          <a class="ev-card" data-anim="fade-up" href="#" style="--img:url('../assets/img/event-2.png')">
+          <a class="ev-card" data-anim="fade-up" href="#" style="--img:url('../assets/img/event-2.webp')">
             <svg class="ev-card__hover" viewBox="0 0 329 429" preserveAspectRatio="none" aria-hidden="true">
               <circle class="rp rp--fill" cx="40.78" cy="392.5" r="295.4" />
               <circle class="rp rp--ring" cx="40.78" cy="392.5" r="425.75" />
@@ -129,7 +139,7 @@
             <span class="ev-card__date">Скоро</span>
             <span class="ev-card__label">лекция<br>Сергея Кузнецова</span>
           </a>
-          <a class="ev-card" data-anim="fade-up" href="#" style="--img:url('../assets/img/event-3.png')">
+          <a class="ev-card" data-anim="fade-up" href="#" style="--img:url('../assets/img/event-3.webp')">
             <svg class="ev-card__hover" viewBox="0 0 329 429" preserveAspectRatio="none" aria-hidden="true">
               <circle class="rp rp--fill" cx="40.78" cy="392.5" r="295.4" />
               <circle class="rp rp--ring" cx="40.78" cy="392.5" r="425.75" />
@@ -159,21 +169,21 @@
 
         <ul class="news__list">
           <li class="news-item" data-anim="fade-up">
-            <a class="news-item__thumb" href="#" style="--img:url('../assets/img/news-1.png')"></a>
+            <a class="news-item__thumb" href="#" style="--img:url('../assets/img/news-1.webp')"></a>
             <div class="news-item__body">
               <time class="news-item__date">11 июл. 2026 г. 18:00</time>
               <a class="news-item__title" href="#">Получайте ежедневную подборку актуальных публикаций о строительстве в Москве</a>
             </div>
           </li>
           <li class="news-item" data-anim="fade-up">
-            <a class="news-item__thumb" href="#" style="--img:url('../assets/img/news-2.png')"></a>
+            <a class="news-item__thumb" href="#" style="--img:url('../assets/img/news-2.webp')"></a>
             <div class="news-item__body">
               <time class="news-item__date">11 июл. 2026 г. 17:50</time>
               <a class="news-item__title" href="#">Сергей Собянин поздравил жителей столицы с Днём московского транспорта</a>
             </div>
           </li>
           <li class="news-item" data-anim="fade-up">
-            <a class="news-item__thumb" href="#" style="--img:url('../assets/img/news-3.png')"></a>
+            <a class="news-item__thumb" href="#" style="--img:url('../assets/img/news-3.webp')"></a>
             <div class="news-item__body">
               <time class="news-item__date">11 июл. 2026 г. 16:30</time>
               <a class="news-item__title" href="#">Владимир Ефимов: более 1200 домов полностью расселили по программе реновации в Москве</a>
@@ -246,6 +256,6 @@
     </div>
   </div>
 
-  <script type="module" src="js/main.js?v=2"></script>
+  <script type="module" src="js/main.js?v=3"></script>
 </body>
 </html>
