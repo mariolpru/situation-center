@@ -1,0 +1,320 @@
+/* ==========================================================================
+   Компоненты / блоки
+   ========================================================================== */
+
+/* ---------- Логотип ---------- */
+.logo { display: inline-flex; align-items: center; gap: 12px; color: #fff; }
+.logo__img { width: 249px; height: 61px; }
+.logo__img--sm { width: 172px; height: 42px; } /* уменьшенный оригинал в липкой шапке */
+.logo__mark {
+  width: 40px; height: 40px; flex: 0 0 40px; border-radius: 50%;
+  background:
+    radial-gradient(circle, var(--c-red) 0 22%, transparent 23% 34%,
+                    var(--c-red) 35% 46%, transparent 47% 62%,
+                    var(--c-red) 63% 76%, transparent 77%);
+}
+.logo__text { line-height: 1.05; }
+.logo__text b { font-family: var(--font-display); font-size: 1.05rem; letter-spacing: .01em; font-weight: 600; display: block; }
+.logo__text small { font-size: .62rem; color: var(--c-white-70); letter-spacing: .01em; }
+.logo--sm .logo__mark { width: 32px; height: 32px; flex-basis: 32px; }
+.logo--sm { color: var(--c-ink); }
+.logo--sm .logo__text b { font-size: .95rem; }
+
+/* ---------- Компактная шапка (sticky) ---------- */
+.topbar {
+  position: fixed; inset: 0 0 auto 0; z-index: 60;
+  background: rgba(255, 255, 255, .82);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--c-line);
+  transform: translateY(-100%);
+  transition: transform .45s var(--ease-out);
+}
+.topbar.is-visible { transform: translateY(0); }
+.topbar__inner { display: flex; align-items: center; gap: 24px; height: 68px; }
+.topbar__nav { display: flex; gap: 28px; margin-left: auto; font-size: .95rem; }
+.topbar__nav a { color: var(--c-ink-70); transition: color .2s; }
+.topbar__nav a:hover { color: var(--c-red); }
+.topbar__cta { padding: 8px 20px; font-size: 15px; }
+
+/* ---------- Бургер ---------- */
+.burger { display: none; width: 40px; height: 40px; flex-direction: column; justify-content: center; gap: 5px; }
+.burger span { display: block; height: 2px; width: 24px; margin-inline: auto; background: var(--c-ink); transition: transform .3s, opacity .3s; }
+.burger--light span { background: #fff; }
+.burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ============================ HERO ============================ */
+.hero { padding: 20px; }
+.hero__card {
+  position: relative; overflow: hidden; border-radius: var(--r-lg);
+  background: var(--c-bg-dark); color: #fff;
+  min-height: min(966px, 90vh);
+  display: flex; flex-direction: column;
+  isolation: isolate;
+}
+.hero__map { position: absolute; inset: 0; z-index: 0; }
+.hero__map-img {
+  position: absolute; inset: 0;
+  background: var(--c-bg-dark) url('/assets/img/moscow.png') center / cover no-repeat;
+}
+/* Затемнение слева/снизу для читаемости заголовка и контента */
+.hero__map-img::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    linear-gradient(to right, rgba(10,13,16,.75) 0%, transparent 55%),
+    linear-gradient(to top, rgba(10,13,16,.65) 0%, transparent 45%);
+}
+.hero__dots { position: absolute; inset: 0; }
+.hero__dots .dot {
+  position: absolute; border-radius: 50%; background: var(--c-red);
+  box-shadow: 0 0 0 0 rgba(239, 62, 74, .5);
+}
+
+/* Градиент за шапкой (из макета: #161F26 → прозрачный, верх ~сплошной) */
+.hero__card::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 220px; z-index: 1;
+  background: linear-gradient(to bottom,
+    #161f26 0%, #161f26 30%, rgba(22,31,38,.62) 55%, rgba(22,31,38,.2) 80%, transparent 100%);
+  pointer-events: none;
+}
+.hero__nav {
+  position: relative; z-index: 3;
+  display: flex; align-items: center; justify-content: space-between; gap: 32px;
+  padding: 28px clamp(20px, 3vw, 44px);
+}
+.hero__menu { display: flex; gap: clamp(24px, 3.5vw, 50px); font-size: 17px; font-weight: 500; }
+.hero__menu a { color: #fff; transition: opacity .2s; }
+.hero__menu a:hover { opacity: .7; }
+.hero__cta { --btn-fg: #fff; } /* белый текст в default, не перебивая hover-вариант */
+
+/* Контент hero (из макета: колонка 672px, заголовок 120px, лид 29px белый, кнопка через 40px) */
+.hero__content {
+  position: relative; z-index: 2; margin-top: auto;
+  padding: clamp(20px, 3.5vw, 51px);
+  max-width: 724px; /* 672 + паддинг */
+}
+.hero__title {
+  font-size: var(--fs-hero); text-transform: uppercase;
+  letter-spacing: -.02em; line-height: .887; color: #fff;
+}
+/* Печатающийся заголовок: строки фиксированной высоты — блок не прыгает,
+   каретка позиционируется абсолютно и не влияет на раскладку */
+.split-line { display: block; height: .887em; overflow: hidden; }
+.split-inner { display: inline-block; position: relative; min-width: 1px; }
+.split-inner.typing::after {
+  content: ""; position: absolute;
+  left: calc(100% + .06em); bottom: .1em;
+  width: .07em; height: .72em;
+  background: var(--c-red);
+  animation: caret-blink .7s steps(1) infinite;
+}
+@keyframes caret-blink { 50% { opacity: 0; } }
+.hero__lead { margin-top: 18px; font-size: var(--fs-lead); line-height: 1.1; color: #fff; }
+.hero__more { margin-top: 40px; --btn-fg: #fff; }
+
+.hero__fact {
+  position: absolute; right: clamp(20px, 3.5vw, 51px); bottom: clamp(20px, 3.5vw, 51px);
+  z-index: 2; text-align: right; color: #fff;
+  display: grid; justify-items: end;
+}
+
+/* ---------- Факт (число) — по компоненту Fact из Figma ---------- */
+.fact__pre { font-family: var(--font-text); font-weight: 400; font-size: clamp(1.1rem, .8rem + 1vw, 1.8rem); line-height: 1.1; }
+.fact__num {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: var(--fs-h1); /* 100px на десктопе, как в макете */
+  line-height: .887; letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+}
+.fact__label { font-family: var(--font-text); font-weight: 400; font-size: clamp(1.1rem, .8rem + 1vw, 1.8rem); line-height: 1.1; }
+.hero__fact { gap: 6px; }
+
+/* ============================ ПАНОРАМА ============================ */
+.panorama__head { margin-bottom: 8px; }
+.panorama__title {
+  position: relative; display: inline-flex; flex-wrap: wrap; align-items: center; gap: 16px;
+  font-size: var(--fs-h1); /* 100px в макете */
+  letter-spacing: -.02em; line-height: .887; color: var(--c-navy);
+}
+/* Тумблер из макета — скрыт по решению от 2026-07-13 */
+.panorama__toggle { display: none; }
+.panorama__head { position: relative; z-index: 2; }
+.panorama__stage {
+  /* сцена растянута вверх до начала заголовка блока: уезжающая крыша
+     растворяется на уровне заголовка, а не у своего прежнего края */
+  --pan-overlap: clamp(110px, 14.6vw, 210px);
+  position: relative;
+  margin-top: calc(-1 * var(--pan-overlap));
+  min-height: clamp(360px, 52vw, 760px);
+  display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center;
+  /* уезжающие этажи не наезжают на соседние блоки: растворяются у границ и клипаются */
+  overflow: hidden;
+  padding-top: calc(var(--pan-overlap) + 48px);
+  padding-bottom: 48px;
+  padding-right: 6px; /* запас под scale-ховер кнопок этажей, иначе обрез справа */
+  mask-image: linear-gradient(to bottom, transparent 0, #000 64px, #000 calc(100% - 64px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 64px, #000 calc(100% - 64px), transparent 100%);
+}
+
+/* Здание из слоёв-этажей (геометрия из Figma: секция 1498×1010) */
+.building { position: relative; width: 100%; aspect-ratio: 1498 / 1010; }
+.floor {
+  position: absolute;
+  transition: transform var(--dur-slow) var(--ease-cine), opacity var(--dur-slow) var(--ease-cine);
+  will-change: transform, opacity;
+}
+.floor img { width: 100%; height: auto; }
+/* Стартовые позиции слоёв (собранное здание, пропорции из макета) */
+.floor--ground { inset: 11% 0 0 0; z-index: 1; }               /* сад/участок — вся ширина */
+.floor--living { left: 32.2%; top: 7.3%; width: 48.8%; z-index: 2; } /* жилой этаж */
+.floor--roof   { left: 32.2%; top: 2.9%; width: 48.8%; z-index: 3; } /* крыша с башней */
+
+/* Кнопки этажей (Figma: 45px, #161f26, активная #ef3e4a) */
+.floor-nav { display: flex; flex-direction: column; gap: 14px; align-self: start; margin-top: 4%; }
+.floor-nav__btn {
+  width: 45px; height: 45px; border-radius: 50%;
+  background: #161f26; color: #fff; font-weight: 600; font-size: 20px;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background-color .3s, transform .3s;
+}
+.floor-nav__btn:hover { transform: scale(1.08); }
+.floor-nav__btn.is-active { background: var(--c-red); }
+
+/* ============================ СОБЫТИЯ ============================ */
+.events__title { margin-bottom: 56px; }
+.events__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.ev-card {
+  position: relative; overflow: hidden; border-radius: var(--r-md);
+  aspect-ratio: 328 / 429; display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 24px 24px 30px; color: #fff; isolation: isolate;
+  background: var(--c-navy) var(--img, none) center / cover no-repeat;
+  transition: transform .4s var(--ease-out), box-shadow .4s var(--ease-out);
+}
+.ev-card::before { /* затемнение снизу для читаемости подписи */
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(to top, rgba(0,0,0,.45) 0%, transparent 55%);
+}
+.ev-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-card); }
+
+/* Ховер: красные круги (Ellipse 348 + кольцо Ellipse 331 из Figma) растут
+   из левого нижнего угла со стаггером — как ripple в Material Design */
+.ev-card__hover {
+  position: absolute; inset: 0; z-index: -1;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+.ev-card__hover .rp {
+  fill: var(--c-red);
+  transform-box: view-box;
+  transform-origin: 12.4% 91.5%; /* центр кругов: 40.78/329, 392.5/429 */
+  transform: scale(0);
+  transition: transform .6s var(--ease-cine);
+}
+.ev-card__hover .rp--ring {
+  fill: none; stroke: var(--c-red); stroke-width: 122.5;
+  transition-delay: .12s; /* кольцо догоняет круг — стаггер */
+}
+.ev-card:hover .ev-card__hover .rp { transform: scale(1); }
+
+.ev-card__date { /* в макете дата — над заголовком, в нижнем блоке */
+  position: relative; z-index: 1; margin-bottom: 8px;
+  font-size: var(--fs-card); line-height: 1.35; font-weight: 500; color: rgba(255,255,255,.6);
+  opacity: 0; transform: translateY(6px);
+  transition: opacity .4s var(--ease-out) .25s, transform .4s var(--ease-out) .25s;
+}
+.ev-card:hover .ev-card__date { opacity: 1; transform: translateY(0); }
+
+.ev-card__label { position: relative; z-index: 1; font-size: var(--fs-card); line-height: 1; font-weight: 500; }
+.ev-card--all { background: var(--c-navy); flex-direction: row; align-items: flex-end; justify-content: space-between; }
+.ev-card--all::before { display: none; }
+.ev-card__arrow { width: 45px; height: 45px; transition: transform .3s var(--ease-out); }
+.ev-card--all:hover { transform: none; box-shadow: none; }
+.ev-card--all:hover .ev-card__arrow { transform: translateX(6px); }
+
+/* ============================ НОВОСТИ ============================ */
+/* Новости (из макета: превью 474×271 r20, дата 17px, заголовок 29px, отступы 40px) */
+.news__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 56px; }
+.link-arrow { display: inline-flex; align-items: center; gap: 24px; color: var(--c-ink); font-size: var(--fs-card); font-weight: 500; }
+.link-arrow:hover { color: var(--c-red); }
+.news__list { display: grid; gap: 40px; }
+.news-item { display: grid; grid-template-columns: minmax(200px, 474px) 1fr; gap: 32px; align-items: start; }
+.news-item__thumb {
+  display: block; aspect-ratio: 474 / 271; border-radius: var(--r-md);
+  background: #ddd var(--img, none) center / cover no-repeat; overflow: hidden;
+  transition: opacity .3s;
+}
+.news-item__thumb:hover { opacity: .9; }
+.news-item__body { display: grid; gap: 18px; }
+.news-item__date { display: block; font-size: var(--fs-body); color: var(--c-ink); }
+.news-item__title { font-size: var(--fs-lead); line-height: 1.1; font-weight: 400; max-width: 691px; transition: color .2s; }
+.news-item__title:hover { color: var(--c-red); }
+
+/* ============================ РАССЫЛКА ============================ */
+/* Рассылка (из макета: карточка r30, паддинги 96/64, заголовок 54px, инпут r20 39/21) */
+.subscribe { padding-bottom: calc(var(--section-y) * 1.5); } /* увеличенный отступ до футера */
+.subscribe__card { background: var(--c-bg-soft); border-radius: var(--r-xl); padding: clamp(24px, 5vw, 64px) clamp(24px, 7vw, 96px); }
+.subscribe__title { margin-bottom: 28px; }
+.subscribe__text { color: var(--c-ink); font-size: var(--fs-body); line-height: 26px; max-width: 415px; margin-bottom: 28px; }
+.subscribe__form { display: flex; gap: 32px; }
+.field {
+  flex: 1; min-height: 68px; padding: 21px 39px; border-radius: var(--r-md);
+  border: 1px solid var(--c-field); background: var(--c-field); color: var(--c-ink);
+  font-size: var(--fs-card);
+  transition: border-color .25s, background-color .25s;
+}
+.field::placeholder { color: var(--c-ink); opacity: .85; }
+.field:focus { outline: none; border-color: var(--c-red); background: #fff; }
+.subscribe__form .btn { flex: 0 0 auto; min-width: min(364px, 40%); justify-content: center; }
+
+/* ============================ FOOTER ============================ */
+/* Футер (из макета: #08131b, заголовки 54px, ссылки Golos 22px/40px, разделители white 12%) */
+.footer { background: var(--c-footer); color: #fff; padding-block: clamp(32px, 4.5vw, 64px); }
+.footer__col { padding-bottom: clamp(32px, 4.5vw, 64px); margin-bottom: clamp(32px, 4.5vw, 64px); border-bottom: 1px solid var(--c-line-dark); }
+.footer__h { font-family: var(--font-display); font-weight: 500; text-transform: uppercase; font-size: var(--fs-h2); letter-spacing: 0; margin-bottom: 32px; }
+.footer__links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px 40px; }
+.footer__links a { position: relative; color: #fff; font-size: var(--fs-card); line-height: 40px; font-weight: 400; }
+/* Ховер: подчёркивание 1px появляется слева направо */
+.footer__links a::after {
+  content: ""; position: absolute; left: 0; bottom: -3px; /* зазор 3px от текста */
+  width: 100%; height: 1px; background: currentColor;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .35s var(--ease-out);
+}
+.footer__links a:hover::after { transform: scaleX(1); }
+.footer__links li + li { margin-top: 0; }
+.footer__bottom { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.footer__logo { width: min(400px, 60vw); height: auto; }
+.footer__social { display: flex; gap: 32px; }
+.footer__social a { display: inline-flex; width: 32px; height: 32px; align-items: center; justify-content: center; transition: opacity .2s, transform .2s; }
+.footer__social a img { max-width: 24px; max-height: 24px; object-fit: contain; }
+.footer__social a:hover { opacity: .7; transform: translateY(-2px); }
+
+/* ============================ МОДАЛКА ============================ */
+.modal { position: fixed; inset: 0; z-index: 100; display: none; }
+.modal.is-open { display: grid; place-items: center; }
+.modal__backdrop { position: absolute; inset: 0; background: rgba(10,12,14,.35); opacity: 0; transition: opacity .4s var(--ease-out); }
+.modal.is-open .modal__backdrop { opacity: 1; }
+.modal__dialog {
+  position: relative; z-index: 1; width: min(800px, 92vw);
+  /* сплошной цвет: rgba(22,32,38,.08) поверх белого, иначе просвечивает фон */
+  background: #ecedee; border-radius: var(--r-xl);
+  padding: clamp(28px, 4vw, 64px);
+  transform: translateY(24px) scale(.98); opacity: 0;
+  transition: transform .5s var(--ease-cine), opacity .4s var(--ease-out);
+  box-shadow: 0 40px 80px -30px rgba(0,0,0,.5);
+}
+.modal.is-open .modal__dialog { transform: translateY(0) scale(1); opacity: 1; }
+.modal__close { position: absolute; top: 20px; right: 20px; width: 44px; height: 44px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: var(--c-ink-70); transition: background-color .2s, color .2s; }
+.modal__close:hover { background: rgba(0,0,0,.06); color: var(--c-ink); }
+.modal__title { margin-bottom: 24px; }
+.modal__text { color: var(--c-ink); font-size: var(--fs-body); line-height: 26px; margin-bottom: 28px; }
+.modal__form { display: grid; gap: 18px; }
+.modal__form .btn { margin-top: 4px; }
+
+/* Затемнение+блюр контента под открытой формой (по просьбе: «всё что ниже блюрится») */
+main, .footer, .topbar { transition: filter .5s var(--ease-out); }
+body.form-open main,
+body.form-open .footer,
+body.form-open .topbar { filter: blur(8px) brightness(.72); }
