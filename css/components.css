@@ -56,7 +56,7 @@
 .hero__map { position: absolute; inset: 0; z-index: 0; }
 .hero__map-img {
   position: absolute; inset: 0;
-  background: var(--c-bg-dark) url('/assets/img/moscow.png') center / cover no-repeat;
+  background: var(--c-bg-dark) url('../assets/img/moscow.png') center / cover no-repeat;
 }
 /* Затемнение слева/снизу для читаемости заголовка и контента */
 .hero__map-img::after {
