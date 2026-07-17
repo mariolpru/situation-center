@@ -33,8 +33,11 @@
   .loader__mark, .loader__mark::before, .loader__mark::after { animation: none; }
 }
 
-/* ---------- Логотип ---------- */
+/* ---------- Логотип (в hero два варианта — по теме) ---------- */
 .logo { display: inline-flex; align-items: center; gap: 12px; color: #fff; }
+.logo__img--darktheme { display: none; }
+[data-theme="dark"] .logo__img--lighttheme { display: none; }
+[data-theme="dark"] .logo__img--darktheme { display: block; }
 .logo__img { width: 249px; height: 61px; }
 .logo__img--sm { width: 172px; height: 42px; } /* уменьшенный оригинал в липкой шапке */
 .logo__mark {
@@ -70,7 +73,7 @@
 /* ---------- Бургер ---------- */
 .burger { display: none; width: 40px; height: 40px; flex-direction: column; justify-content: center; gap: 5px; }
 .burger span { display: block; height: 2px; width: 24px; margin-inline: auto; background: var(--c-ink); transition: transform .3s, opacity .3s; }
-.burger--light span { background: #fff; }
+.burger--light span { background: var(--hero-fg); }
 .burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
 .burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
@@ -79,7 +82,8 @@
 .hero { padding: 20px; }
 .hero__card {
   position: relative; overflow: hidden; border-radius: var(--r-lg);
-  background: var(--c-bg-dark); color: #fff;
+  background: var(--hero-bg); color: var(--hero-fg);
+  transition: background-color .6s var(--ease-out), color .6s var(--ease-out);
   min-height: min(966px, 90vh);
   display: flex; flex-direction: column;
   isolation: isolate;
@@ -87,14 +91,12 @@
 .hero__map { position: absolute; inset: 0; z-index: 0; }
 .hero__map-img {
   position: absolute; inset: 0;
-  background: var(--c-bg-dark) url('../assets/img/moscow.png') center / cover no-repeat;
+  background: var(--hero-bg) var(--hero-map) center / cover no-repeat;
 }
-/* Затемнение слева/снизу для читаемости заголовка и контента */
+/* Оверлей для читаемости заголовка и контента (зависит от темы) */
 .hero__map-img::after {
   content: ""; position: absolute; inset: 0;
-  background:
-    linear-gradient(to right, rgba(10,13,16,.75) 0%, transparent 55%),
-    linear-gradient(to top, rgba(10,13,16,.65) 0%, transparent 45%);
+  background: var(--hero-dim);
 }
 .hero__dots { position: absolute; inset: 0; }
 .hero__dots .dot {
@@ -102,11 +104,10 @@
   box-shadow: 0 0 0 0 rgba(239, 62, 74, .5);
 }
 
-/* Градиент за шапкой (из макета: #161F26 → прозрачный, верх ~сплошной) */
+/* Градиент за шапкой (зависит от темы) */
 .hero__card::before {
   content: ""; position: absolute; inset: 0 0 auto 0; height: 220px; z-index: 1;
-  background: linear-gradient(to bottom,
-    #161f26 0%, #161f26 30%, rgba(22,31,38,.62) 55%, rgba(22,31,38,.2) 80%, transparent 100%);
+  background: var(--hero-topgrad);
   pointer-events: none;
 }
 .hero__nav {
@@ -115,9 +116,9 @@
   padding: 28px clamp(20px, 3vw, 44px);
 }
 .hero__menu { display: flex; gap: clamp(24px, 3.5vw, 50px); font-size: 17px; font-weight: 500; }
-.hero__menu a { color: #fff; transition: opacity .2s; }
+.hero__menu a { color: var(--hero-fg); transition: opacity .2s; }
 .hero__menu a:hover { opacity: .7; }
-.hero__cta { --btn-fg: #fff; } /* белый текст в default, не перебивая hover-вариант */
+.hero__cta { --btn-fg: var(--hero-fg); } /* белый текст в default, не перебивая hover-вариант */
 
 /* Контент hero (из макета: колонка 672px, заголовок 120px, лид 29px белый, кнопка через 40px) */
 .hero__content {
@@ -127,7 +128,7 @@
 }
 .hero__title {
   font-size: var(--fs-hero); text-transform: uppercase;
-  letter-spacing: -.02em; line-height: .887; color: #fff;
+  letter-spacing: -.02em; line-height: .887; color: var(--hero-fg);
 }
 /* Печатающийся заголовок: строки фиксированной высоты — блок не прыгает,
    каретка позиционируется абсолютно и не влияет на раскладку */
@@ -141,12 +142,12 @@
   animation: caret-blink .7s steps(1) infinite;
 }
 @keyframes caret-blink { 50% { opacity: 0; } }
-.hero__lead { margin-top: 18px; font-size: var(--fs-lead); line-height: 1.1; color: #fff; }
-.hero__more { margin-top: 40px; --btn-fg: #fff; }
+.hero__lead { margin-top: 18px; font-size: var(--fs-lead); line-height: 1.1; color: var(--hero-fg); }
+.hero__more { margin-top: 40px; --btn-fg: var(--hero-fg); }
 
 .hero__fact {
   position: absolute; right: clamp(20px, 3.5vw, 51px); bottom: clamp(20px, 3.5vw, 51px);
-  z-index: 2; text-align: right; color: #fff;
+  z-index: 2; text-align: right; color: var(--hero-fg);
   display: grid; justify-items: end;
 }
 

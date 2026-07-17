@@ -4,11 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ситуационный центр — прототип с анимациями</title>
-  <link rel="stylesheet" href="css/fonts.css?v=4" />
-  <link rel="stylesheet" href="css/tokens.css?v=4" />
-  <link rel="stylesheet" href="css/base.css?v=4" />
-  <link rel="stylesheet" href="css/components.css?v=4" />
-  <link rel="stylesheet" href="css/layout.css?v=4" />
+  <link rel="stylesheet" href="css/fonts.css?v=5" />
+  <link rel="stylesheet" href="css/tokens.css?v=5" />
+  <link rel="stylesheet" href="css/base.css?v=5" />
+  <link rel="stylesheet" href="css/components.css?v=5" />
+  <link rel="stylesheet" href="css/layout.css?v=5" />
 </head>
 <body>
 
@@ -20,6 +20,11 @@
     /* показываем лоадер сразу и страхуемся: максимум 4с, даже если JS-модуль не загрузится */
     document.documentElement.classList.add('js');
     setTimeout(function () { document.documentElement.classList.add('loaded'); }, 4000);
+    /* восстанавливаем тему до отрисовки (без мигания) */
+    try {
+      if (localStorage.getItem('sc-theme') === 'dark')
+        document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
   </script>
 
   <!-- ===== Компактная липкая шапка (появляется на скролле) ===== -->
@@ -54,8 +59,9 @@
 
         <!-- Навигация поверх карты -->
         <div class="hero__nav">
-          <a class="logo" href="#top" aria-label="Ситуационный центр">
-            <img class="logo__img" src="assets/icons/logo-sitcenter-white.svg" alt="Ситуационный центр градостроительного комплекса Москвы" />
+          <a class="logo" href="#top" aria-label="Ситуационный центр" title="Двойной клик — сменить тему">
+            <img class="logo__img logo__img--lighttheme" src="assets/icons/logo-sitcenter-color.svg" alt="Ситуационный центр градостроительного комплекса Москвы" />
+            <img class="logo__img logo__img--darktheme" src="assets/icons/logo-sitcenter-white.svg" alt="" aria-hidden="true" />
           </a>
           <nav class="hero__menu" aria-label="Основная навигация">
             <a href="#about">О центре</a>
@@ -256,6 +262,6 @@
     </div>
   </div>
 
-  <script type="module" src="js/main.js?v=4"></script>
+  <script type="module" src="js/main.js?v=5"></script>
 </body>
 </html>

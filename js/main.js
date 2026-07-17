@@ -19,6 +19,19 @@ const ready = Promise.race([
 ]).then(() => { root.classList.add("loaded"); });
 
 /* ------------------------------------------------------------------ *
+ * 0. Темы: светлая (по умолчанию) ↔ тёмная — дабл-клик по логотипу
+ * ------------------------------------------------------------------ */
+(function themeSwitcher() {
+  $$(".logo").forEach(logo => logo.addEventListener("dblclick", (e) => {
+    e.preventDefault();
+    const dark = root.getAttribute("data-theme") === "dark";
+    if (dark) root.removeAttribute("data-theme");
+    else root.setAttribute("data-theme", "dark");
+    try { localStorage.setItem("sc-theme", dark ? "light" : "dark"); } catch (err) {}
+  }));
+})();
+
+/* ------------------------------------------------------------------ *
  * 1. Hero: генерация и пульсация точек на карте
  * ------------------------------------------------------------------ */
 (function heroDots() {

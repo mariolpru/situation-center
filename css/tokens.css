@@ -3,13 +3,22 @@
    Источники: Figma get_variable_defs + замеры по макету Desktop-2 (1440)
    ========================================================================== */
 :root {
-  /* --- Цвета (сверено с Figma) --- */
-  --c-red: #EF3E4A;          /* Nice red — акцент, CTA, точки, обводки */
-  --c-red-600: #d92f3b;
+  /* --- Цвета: СВЕТЛАЯ тема (макет Desktop-4) — по умолчанию --- */
+  --c-red: #BE171E;          /* новый тёмно-красный: акцент, CTA, точки, обводки */
+  --c-red-600: #9e1218;
   --c-black: #000000;
-  --c-ink: #08131b;          /* основной тёмный текст в макете */
-  --c-ink-70: rgba(8, 19, 27, .7);
-  --c-ink-50: rgba(8, 19, 27, .5);
+  --c-ink: #09131c;          /* основной тёмный текст */
+  --c-ink-70: rgba(9, 19, 28, .7);
+  --c-ink-50: rgba(9, 19, 28, .5);
+
+  /* --- Первый экран (hero), переключается темой --- */
+  --hero-bg: #eef0f1;
+  --hero-fg: #09131c;
+  --hero-map: url('../assets/img/moscow_light.png');
+  /* градиент за шапкой и затемнение для читаемости — светлые */
+  --hero-topgrad: linear-gradient(to bottom, rgba(238,240,241,.95) 0%, rgba(238,240,241,.7) 45%, transparent 100%);
+  --hero-dim: linear-gradient(to right, rgba(238,240,241,.8) 0%, transparent 55%),
+              linear-gradient(to top, rgba(238,240,241,.7) 0%, transparent 45%);
   --c-navy: #161f26;         /* тёмно-синий: карточка «все события», кнопки этажей */
   --c-white: #ffffff;
   --c-white-70: rgba(255, 255, 255, .7);
@@ -59,4 +68,18 @@
 
   --header-h: 92px;
   --shadow-card: 0 20px 40px -24px rgba(0, 0, 0, .35);
+}
+
+/* --- ТЁМНАЯ тема (исходный макет Desktop-2): дабл-клик по логотипу --- */
+[data-theme="dark"] {
+  --c-red: #EF3E4A;
+  --c-red-600: #d92f3b;
+
+  --hero-bg: #08131b;
+  --hero-fg: #ffffff;
+  --hero-map: url('../assets/img/moscow.png');
+  --hero-topgrad: linear-gradient(to bottom,
+    #161f26 0%, #161f26 30%, rgba(22,31,38,.62) 55%, rgba(22,31,38,.2) 80%, transparent 100%);
+  --hero-dim: linear-gradient(to right, rgba(10,13,16,.75) 0%, transparent 55%),
+              linear-gradient(to top, rgba(10,13,16,.65) 0%, transparent 45%);
 }
