@@ -375,6 +375,23 @@
 .floor-nav__btn:hover { transform: scale(1.08); }
 .floor-nav__btn.is-active { background: var(--c-red); }
 
+/* ---------- Интерактивные точки-зоны 2-го этажа ---------- */
+/* Оверлей лежит поверх изображения этажа и едет вместе с ним (наследует transform слоя).
+   Точки видны и кликабельны только когда выбран уровень 2 (класс на #building). */
+.hotspots { position: absolute; inset: 0; opacity: 0; pointer-events: none;
+  transition: opacity var(--dur-slow) var(--ease-cine); z-index: 4; }
+#building.show-hotspots .hotspots { opacity: 1; pointer-events: auto; }
+/* Дефолт — белый круг с красным бордером и тёмным глифом; ховер — красная заливка, белый глиф */
+.hotspot {
+  position: absolute; box-sizing: border-box; width: 31px; height: 31px; border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff; border: 2px solid var(--c-red); color: #161f26;
+  display: grid; place-items: center; cursor: pointer;
+  transition: transform .25s var(--ease-out), background-color .2s, color .2s;
+}
+.hotspot svg { width: 100%; height: 100%; display: block; }
+.hotspot:hover { background: var(--c-red); color: #fff; transform: translate(-50%, -50%) scale(1.12); }
+
 /* ============================ СОБЫТИЯ ============================ */
 .events__title { margin-bottom: 56px; }
 .events__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
@@ -513,6 +530,48 @@
 .modal__text { color: var(--c-ink); font-size: var(--fs-body); line-height: 26px; margin-bottom: 28px; }
 .modal__form { display: grid; gap: 18px; }
 .modal__form .btn { margin-top: 4px; }
+
+/* ---------- Широкий попап зоны панорамы (Зал / Игра / Панорама) ---------- */
+.modal__dialog--wide { width: min(1200px, 94vw); }
+
+/* Зал принятия решений: слева описание, справа фото + галерея */
+.zal { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: clamp(24px, 3vw, 48px); align-items: start; }
+.zal__aside .modal__title { margin-bottom: 28px; }
+.zal__lead { color: var(--c-ink); font-size: var(--fs-body); line-height: 24px; margin-bottom: 28px; }
+.zal__mode { margin-bottom: 22px; }
+.zal__mode-h { font-family: var(--font-text); font-weight: 600; font-size: var(--fs-body); color: var(--c-ink); margin-bottom: 6px; }
+.zal__mode-t { color: var(--c-ink); font-size: var(--fs-body); line-height: 24px; }
+.zal__media { display: grid; gap: 14px; min-width: 0; }
+.zal__hero { width: 100%; aspect-ratio: 966 / 565; object-fit: cover; border-radius: 16px; display: block; }
+.zal__thumbs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+.zal__thumb { width: 100%; aspect-ratio: 158 / 92; object-fit: cover; border-radius: 10px; cursor: pointer;
+  opacity: .55; transition: opacity .2s, box-shadow .2s; display: block; }
+.zal__thumb:hover { opacity: .85; }
+.zal__thumb.is-active { opacity: 1; box-shadow: inset 0 0 0 3px var(--c-red); }
+
+/* Мини-игра «Строитель» */
+.game { display: grid; gap: 20px; }
+.game__stage { position: relative; width: 100%; aspect-ratio: 966 / 565; border-radius: 16px; overflow: hidden; background: #cfe3ef; }
+.game__stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.game__hint { position: absolute; left: 0; right: 0; bottom: 14px; text-align: center; color: var(--c-ink-70); font-size: 15px; pointer-events: none; }
+.game__over { position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  background: rgba(236,237,238,.82); text-align: center; padding: 20px; }
+.game__stage.is-over .game__over { display: flex; }
+.game__over-title { font-family: var(--font-display); text-transform: uppercase; font-size: clamp(28px, 4vw, 44px); color: var(--c-ink); }
+.game__over-score { color: var(--c-ink-70); font-size: var(--fs-body); }
+.game__controls { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(14px, 2vw, 28px); }
+.game__controls .btn { width: 100%; padding: 22px; font-size: 22px; }
+
+/* Панорама — плейсхолдер медиа как в макете */
+.panorama-pop__media { width: 100%; aspect-ratio: 966 / 565; border-radius: 16px; background: #8d7f80; }
+
+@media (max-width: 860px) {
+  .zal { grid-template-columns: 1fr; }
+  .zal__thumbs { grid-template-columns: repeat(6, 1fr); }
+}
+@media (max-width: 520px) {
+  .zal__thumbs { grid-template-columns: repeat(3, 1fr); }
+}
 
 /* Затемнение+блюр контента под открытой формой (по просьбе: «всё что ниже блюрится») */
 main, .footer, .topbar { transition: filter .5s var(--ease-out); }
