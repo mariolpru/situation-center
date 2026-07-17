@@ -136,7 +136,8 @@ const ready = Promise.race([
   inView(items, ({ target }) => {
     animate(target, { opacity: [0, 1], transform: ["translateY(28px)", "translateY(0)"] },
       { duration: .7, ease: [.16, 1, .3, 1] });
-    return () => {}; // однократно (по умолчанию inView срабатывает раз)
+    // НИЧЕГО не возвращаем: в Motion возврат функции = leave-обработчик, из-за него
+    // появление повторялось при каждом повторном входе (дёрганье/зацикливание у порога).
   }, { amount: .2 });
 })();
 

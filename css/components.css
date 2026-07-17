@@ -355,7 +355,8 @@
 .building { position: relative; width: 100%; aspect-ratio: 1498 / 1010; }
 .floor {
   position: absolute;
-  transition: transform var(--dur-slow) var(--ease-cine), opacity var(--dur-slow) var(--ease-cine);
+  /* Анимацию сдвига этажей ведёт Motion (js). CSS-transition убран: в Safari он
+     повторно триггерился при коммите стиля → анимация проигрывалась дважды. */
   will-change: transform, opacity;
 }
 .floor img { width: 100%; height: auto; }
