@@ -205,6 +205,12 @@
 .newslist__list { margin-top: clamp(24px, 2vw, 30px); }
 .newslist .news__list { gap: 40px; }
 
+/* Сетка «Все события»: 3 колонки, карточки — те же ev-card, что на главной */
+.eventslist__grid {
+  margin-top: clamp(24px, 2vw, 30px);
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+}
+
 /* Пагинация (из макета: ячейка 50×38 r20; активная — заливка BE171E,
    hover — обводка 2px BE171E) */
 .pagination { display: flex; flex-wrap: wrap; gap: 12px; margin-top: clamp(24px, 2.3vw, 30px); }
@@ -366,15 +372,17 @@
 .footer__col { padding-bottom: clamp(32px, 4.5vw, 64px); margin-bottom: clamp(32px, 4.5vw, 64px); border-bottom: 1px solid var(--c-line-dark); }
 .footer__h { font-family: var(--font-display); font-weight: 500; text-transform: uppercase; font-size: var(--fs-h2); letter-spacing: 0; margin-bottom: 32px; }
 .footer__links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px 40px; }
-.footer__links a { position: relative; color: #fff; font-size: var(--fs-card); line-height: 40px; font-weight: 400; }
-/* Ховер: подчёркивание 1px появляется слева направо */
-.footer__links a::after {
-  content: ""; position: absolute; left: 0; bottom: -3px; /* зазор 3px от текста */
-  width: 100%; height: 1px; background: currentColor;
-  transform: scaleX(0); transform-origin: left;
-  transition: transform .35s var(--ease-out);
+/* Ховер: подчёркивание 1px слева направо. Градиент-фон с box-decoration-break
+   вместо ::after — у многострочных ссылок подчёркивается каждая строка */
+.footer__links a {
+  color: #fff; font-size: var(--fs-card); line-height: 40px; font-weight: 400;
+  background: linear-gradient(currentColor, currentColor) no-repeat 0 1.5em;
+  background-size: 0% 1px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: background-size .35s var(--ease-out);
 }
-.footer__links a:hover::after { transform: scaleX(1); }
+.footer__links a:hover { background-size: 100% 1px; }
 .footer__links li + li { margin-top: 0; }
 .footer__bottom { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 .footer__logo { width: min(400px, 60vw); height: auto; }
