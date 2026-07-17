@@ -42,7 +42,7 @@
   .hero__content { max-width: 100%; }
   .hero__title br { display: none; }
   .hero__lead br { display: none; }
-  .hero__fact { position: static; text-align: left; justify-items: start; margin: 20px 18px 4px; }
+  .hero__fact { position: static; text-align: left; justify-items: start; margin: 32px 18px 40px; }
 
   .stats__grid { grid-template-columns: 1fr; gap: 28px; }
 
