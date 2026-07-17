@@ -289,7 +289,7 @@ function setupPagination(pag, total, onChange) {
     const cells = [];
     for (let n = 0; n < 18; n++) {
       const c = CARDS[n % 3];
-      cells.push(`<a class="ev-card" href="#" style="--img:url('../${c.img}')">
+      cells.push(`<a class="ev-card" href="event.html" style="--img:url('../${c.img}')">
         ${RIPPLE}
         <span class="ev-card__date">${c.date}</span>
         <span class="ev-card__label">${c.label}</span>
@@ -381,24 +381,54 @@ function setupPagination(pag, total, onChange) {
 /* ------------------------------------------------------------------ *
  * 8. Модалка «Запись на экскурсию» + блюр страницы
  * ------------------------------------------------------------------ */
-(function modal() {
-  const modal = $("#excursion");
-  if (!modal) return;
-  const open = () => { modal.classList.add("is-open"); modal.setAttribute("aria-hidden", "false"); document.body.classList.add("form-open"); };
-  const close = () => { modal.classList.remove("is-open"); modal.setAttribute("aria-hidden", "true"); document.body.classList.remove("form-open"); };
-  // делегирование: любые [data-open-form] (в т.ч. добавленные в мобильное меню)
+(function modals() {
+  const openModal = (m) => { m.classList.add("is-open"); m.setAttribute("aria-hidden", "false"); document.body.classList.add("form-open"); };
+  const closeAll = () => {
+    $$(".modal.is-open").forEach(m => {
+      m.classList.remove("is-open"); m.setAttribute("aria-hidden", "true");
+      // сброс флоу к начальному состоянию (форма ↔ подтверждение)
+      const states = $$(".modal__state", m);
+      if (states.length) {
+        states.forEach(s => { s.hidden = s.dataset.state !== "form"; });
+        m.querySelector("form")?.reset();
+      }
+    });
+    document.body.classList.remove("form-open");
+  };
+  // делегирование: [data-open-form] → экскурсия; [data-open-modal="id"] → любая модалка
   document.addEventListener("click", (e) => {
-    if (e.target.closest("[data-open-form]")) { e.preventDefault(); open(); }
-    if (e.target.closest("[data-close-form]")) { close(); }
+    const generic = e.target.closest("[data-open-modal]");
+    if (generic) {
+      e.preventDefault();
+      const m = document.getElementById(generic.dataset.openModal);
+      if (m) openModal(m);
+      return;
+    }
+    if (e.target.closest("[data-open-form]")) {
+      e.preventDefault();
+      const m = $("#excursion");
+      if (m) openModal(m);
+    }
+    if (e.target.closest("[data-close-form]")) closeAll();
   });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeAll(); });
+
+  // Флоу «Запись на лекцию»: сабмит → состояние «Ваша запись принята»
+  const lf = $("#lectureForm");
+  if (lf) lf.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const m = lf.closest(".modal");
+    $$(".modal__state", m).forEach(s => { s.hidden = s.dataset.state !== "success"; });
+  });
 })();
 
 /* ------------------------------------------------------------------ *
  * 9. Демо-отправка форм (без бэкенда)
  * ------------------------------------------------------------------ */
 (function formsDemo() {
-  $$("form").forEach(form => form.addEventListener("submit", (e) => {
+  $$("form").forEach(form => {
+    if (form.id === "lectureForm") return; // у лекции свой флоу (подтверждение)
+    form.addEventListener("submit", (e) => {
     e.preventDefault();
     const btn = form.querySelector("button[type=submit]");
     if (!btn) return;
@@ -407,5 +437,6 @@ function setupPagination(pag, total, onChange) {
     btn.disabled = true;
     if (!reduced) animate(btn, { scale: [1, .96, 1] }, { duration: .35 });
     setTimeout(() => { btn.textContent = label; btn.disabled = false; form.reset(); }, 1800);
-  }));
+  });
+  });
 })();

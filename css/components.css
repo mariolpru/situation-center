@@ -201,6 +201,23 @@
 .article__body a { text-decoration: underline; text-underline-position: from-font; }
 .article__body a:hover { color: var(--c-red); }
 
+/* ---------- Страница события: подзаголовки и блок «Детали» ---------- */
+.article__section { margin-top: 50px; max-width: 868px; }
+.article__subtitle { font-family: var(--font-text); font-weight: 400; font-size: var(--fs-lead); line-height: 1.1; color: var(--c-ink); }
+.article__section .article__body--tight { margin-top: 20px; }
+.article__body--tight { margin-top: 0; }
+
+.details-card {
+  margin-top: 50px; max-width: 868px;
+  background: #ecedee; border-radius: var(--r-md);
+  padding: clamp(24px, 3.5vw, 50px);
+  display: grid; gap: 20px; justify-items: start;
+}
+.details-card__text { font-size: clamp(17px, 1.4vw, 20px); line-height: 1.5; color: var(--c-ink); }
+
+/* Состояния модалки (форма → подтверждение) */
+.modal__state[hidden] { display: none; }
+
 /* ============================ ВСЕ НОВОСТИ ============================ */
 .newslist__list { margin-top: clamp(24px, 2vw, 30px); }
 .newslist .news__list { gap: 40px; }
