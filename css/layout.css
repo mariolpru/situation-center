@@ -25,7 +25,8 @@
 
 /* ============================ ≤ 1024 ============================ */
 @media (max-width: 1024px) {
-  .hero__menu, .topbar__nav { display: none; }
+  .hero__menu, .topbar__nav, .pagebar__menu { display: none; }
+  .pagebar .burger { display: flex; }
   .burger { display: flex; }
   .hero__cta, .topbar__cta { display: none; }
   .panorama__stage { grid-template-columns: 1fr; }
@@ -35,6 +36,11 @@
 /* ============================ MOBILE ≤ 767 ============================ */
 @media (max-width: 767px) {
   :root { --header-h: 64px; }
+
+  /* Статья: шеринг переезжает под заголовок в строку */
+  .article__head { flex-direction: column; }
+  .share { flex-direction: row; }
+  .pagebar .btn { display: none; } /* запись — через бургер-меню */
 
   .hero { padding: 10px; }
   .hero__card { min-height: 88vh; }

@@ -162,6 +162,45 @@
 .fact__label { font-family: var(--font-text); font-weight: 400; font-size: clamp(1.1rem, .8rem + 1vw, 1.8rem); line-height: 1.1; }
 .hero__fact { gap: 6px; }
 
+/* ============================ СТРАНИЦА НОВОСТИ ============================ */
+/* Шапка внутренних страниц (светлая, статичная) */
+.pagebar { padding: 28px 0; }
+.pagebar__inner { display: flex; align-items: center; justify-content: space-between; gap: 32px; }
+.pagebar__menu { display: flex; gap: clamp(24px, 3.5vw, 50px); font-size: 17px; font-weight: 500; }
+.pagebar__menu a { color: var(--c-ink); transition: opacity .2s; }
+.pagebar__menu a:hover { opacity: .7; }
+.pagebar .burger { display: none; }
+
+.article { padding-block: clamp(24px, 3.5vw, 65px) clamp(28px, 3.9vw, 56px); }
+.article__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; }
+.article__title {
+  font-size: var(--fs-h1); letter-spacing: -.02em; line-height: .887;
+  text-transform: uppercase; color: var(--c-navy); max-width: 1099px;
+}
+
+/* Шеринг: круглые кнопки, hover — красный (из макета) */
+.share { display: flex; flex-direction: column; gap: 14px; flex: 0 0 auto; }
+.share__btn {
+  width: 45px; height: 45px; border-radius: 50%;
+  background: var(--c-navy); display: grid; place-items: center;
+  transition: background-color .25s var(--ease-out), transform .25s var(--ease-out);
+}
+.share__btn img { width: 24px; height: 24px; object-fit: contain; }
+.share__btn:hover { background: #be171e; transform: scale(1.06); }
+
+.article__meta { margin-top: 30px; display: grid; gap: 18px; max-width: 862px; }
+.article__date { font-size: var(--fs-body); line-height: 1.5; color: var(--c-ink); }
+.article__lead { font-size: var(--fs-lead); line-height: 1.1; color: var(--c-ink); }
+
+.article__figure { margin-top: 50px; max-width: 1046px; }
+.article__img { width: 100%; aspect-ratio: 700 / 400; object-fit: cover; border-radius: var(--r-md); }
+.article__caption { margin-top: 10px; font-size: var(--fs-body); line-height: 1.5; color: #8e9295; }
+
+.article__body { margin-top: 50px; max-width: 862px; font-size: clamp(17px, 1.4vw, 20px); line-height: 1.5; color: var(--c-ink); }
+.article__body p + p { margin-top: 20px; }
+.article__body a { text-decoration: underline; text-underline-position: from-font; }
+.article__body a:hover { color: var(--c-red); }
+
 /* ============================ ПАНОРАМА ============================ */
 .panorama__head { margin-bottom: 8px; }
 .panorama__title {

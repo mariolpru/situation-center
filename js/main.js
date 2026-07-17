@@ -245,7 +245,7 @@ const ready = Promise.race([
  * 7. Мобильное меню (бургеры)
  * ------------------------------------------------------------------ */
 (function mobileMenu() {
-  const links = $$(".hero__menu a").map(a => `<a href="${a.getAttribute("href")}">${a.textContent}</a>`).join("");
+  const links = $$(".hero__menu a, .pagebar__menu a").map(a => `<a href="${a.getAttribute("href")}">${a.textContent}</a>`).join("");
   const menu = document.createElement("nav");
   menu.className = "mobile-menu";
   menu.innerHTML = links + `<button class="btn btn--red-outline" data-open-form>Записаться на экскурсию</button>`;
