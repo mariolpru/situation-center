@@ -243,7 +243,9 @@
   color: #be171e; font-size: 17px; line-height: normal;
   margin-top: 8px;
 }
+/* Обёртку навешивает JS вокруг поля с ошибкой (см. setFieldError) */
 .field-wrap { display: grid; gap: 0; }
+.field-wrap .field { width: 100%; }
 
 /* ---------- Флоу экскурсии: календарь ---------- */
 .cal { width: 100%; }
@@ -251,10 +253,11 @@
 .cal__month { font-weight: 500; font-size: 17px; color: var(--c-ink); }
 .cal__nav {
   width: 36px; height: 36px; display: grid; place-items: center;
-  border-radius: 50%; color: var(--c-ink); font-size: 20px;
+  border-radius: 50%; color: var(--c-ink);
   transition: background-color .2s;
 }
-.cal__nav:hover { background: rgba(8,19,27,.08); }
+.cal__nav:not(:disabled):hover { background: rgba(8,19,27,.08); cursor: pointer; }
+.cal__nav:disabled { opacity: .25; cursor: default; }
 .cal__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; justify-items: center; }
 .cal__dow { font-size: 15px; font-weight: 600; color: var(--c-ink); padding: 6px 0; }
 .cal__dow--weekend { color: #be171e; }
@@ -285,11 +288,12 @@
 .stepper { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin: 8px 0 24px; }
 .stepper__btn {
   width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center;
-  font-size: 26px; color: var(--c-ink); transition: background-color .2s, opacity .2s;
+  color: var(--c-ink); transition: background-color .2s, opacity .2s;
 }
 .stepper__btn:hover { background: rgba(8,19,27,.08); }
 .stepper__btn:disabled { opacity: .25; cursor: default; }
 .stepper__val { font-size: 22px; font-weight: 500; color: var(--c-ink); min-width: 60px; text-align: center; }
+.modal__state[data-state="count"] .btn { width: 100%; }
 
 .modal__summary { color: var(--c-ink-50); font-size: 17px; margin: -16px 0 24px; }
 
@@ -447,7 +451,12 @@
 .subscribe__card { background: var(--c-bg-soft); border-radius: var(--r-xl); padding: clamp(24px, 5vw, 64px) clamp(24px, 7vw, 96px); }
 .subscribe__title { margin-bottom: 28px; }
 .subscribe__text { color: var(--c-ink); font-size: var(--fs-body); line-height: 26px; max-width: 415px; margin-bottom: 28px; }
-.subscribe__form { display: flex; gap: 32px; }
+/* Ряд «поле + кнопка». Сетка, а не флекс: текст ошибки уходит во вторую строку под поле
+   и не тянет за собой высоту кнопки. display:contents «распаковывает» обёртку от JS. */
+.subscribe__form { display: grid; grid-template-columns: 1fr auto; gap: 0 32px; }
+.subscribe__form .field-wrap { display: contents; }
+.subscribe__form .field { grid-column: 1; grid-row: 1; }
+.subscribe__form .field-error { grid-column: 1; grid-row: 2; }
 .field {
   flex: 1; min-height: 68px; padding: 21px 39px; border-radius: var(--r-md);
   border: 1px solid var(--c-field); background: var(--c-field); color: var(--c-ink);
@@ -456,7 +465,7 @@
 }
 .field::placeholder { color: var(--c-ink); opacity: .85; }
 .field:focus { outline: none; border-color: var(--c-red); background: #fff; }
-.subscribe__form .btn { flex: 0 0 auto; min-width: min(364px, 40%); justify-content: center; }
+.subscribe__form .btn { grid-column: 2; grid-row: 1; min-width: min(364px, 40%); justify-content: center; }
 
 /* ============================ FOOTER ============================ */
 /* Футер (из макета: #08131b, заголовки 54px, ссылки Golos 22px/40px, разделители white 12%) */

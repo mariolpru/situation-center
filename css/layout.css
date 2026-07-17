@@ -74,8 +74,9 @@
   .news-item__thumb { height: 180px; width: 100%; }
   .news__head { flex-wrap: wrap; gap: 12px; }
 
-  .subscribe__form { flex-direction: column; }
-  .subscribe__form .btn { width: 100%; }
+  .subscribe__form { grid-template-columns: 1fr; }
+  .subscribe__form .field-error { grid-row: 2; }
+  .subscribe__form .btn { grid-column: 1; grid-row: 3; width: 100%; }
 
   .footer__links { grid-template-columns: 1fr; }
   .footer__bottom { flex-direction: column; align-items: flex-start; }

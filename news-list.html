@@ -4,11 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Все новости — Ситуационный центр</title>
-  <link rel="stylesheet" href="css/fonts.css?v=15" />
-  <link rel="stylesheet" href="css/tokens.css?v=15" />
-  <link rel="stylesheet" href="css/base.css?v=15" />
-  <link rel="stylesheet" href="css/components.css?v=15" />
-  <link rel="stylesheet" href="css/layout.css?v=15" />
+  <link rel="stylesheet" href="css/fonts.css?v=16" />
+  <link rel="stylesheet" href="css/tokens.css?v=16" />
+  <link rel="stylesheet" href="css/base.css?v=16" />
+  <link rel="stylesheet" href="css/components.css?v=16" />
+  <link rel="stylesheet" href="css/layout.css?v=16" />
 </head>
 <body>
 
@@ -98,23 +98,8 @@
     </div>
   </footer>
 
-  <!-- ===== Модалка: запись на экскурсию ===== -->
-  <div class="modal" id="excursion" aria-hidden="true">
-    <div class="modal__backdrop" data-close-form></div>
-    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="excursion-title">
-      <button class="modal__close" aria-label="Закрыть" data-close-form>
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
-      </button>
-      <h2 class="eyebrow modal__title" id="excursion-title">Запись на экскурсию</h2>
-      <p class="modal__text">Оставьте свои контактные данные и мы<br>свяжемся с вами в ближайшее время</p>
-      <form class="modal__form" novalidate>
-        <input class="field" type="email" placeholder="Email" aria-label="Email" />
-        <input class="field" type="tel" placeholder="Телефон" aria-label="Телефон" />
-        <button class="btn btn--solid" type="submit">Записаться</button>
-      </form>
-    </div>
-  </div>
+  <!-- Модалки «Запись на экскурсию» и «Подписка оформлена» строятся в js/main.js — они одинаковы на всех страницах -->
 
-  <script type="module" src="js/main.js?v=15"></script>
+  <script type="module" src="js/main.js?v=16"></script>
 </body>
 </html>
