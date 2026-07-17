@@ -48,9 +48,9 @@
 @media (max-width: 767px) {
   :root { --header-h: 64px; }
 
-  /* Статья: шеринг переезжает под заголовок в строку */
-  .article__head { flex-direction: column; }
-  .share { flex-direction: row; }
+  /* Статья: шеринг из абсолюта уезжает под заголовок в строку */
+  .article__head { padding-right: 0; }
+  .share { position: static; flex-direction: row; margin-top: 22px; }
   .pagebar .btn { display: none; } /* запись — через бургер-меню */
 
   .hero { padding: 10px; }
@@ -83,6 +83,10 @@
   .news-item { grid-template-columns: 1fr; gap: 12px; }
   .news-item__thumb { height: 180px; width: 100%; }
   .news__head { flex-wrap: wrap; gap: 12px; }
+
+  /* Близость: заголовок ближе к своему блоку, чем к предыдущему
+     (было 56px до контента vs ~28px до пред. секции — заголовок «прилипал» вверх) */
+  .events__title, .news__head { margin-top: 24px; margin-bottom: 20px; }
 
   .subscribe__form { grid-template-columns: 1fr; }
   .subscribe__form .field-error { grid-row: 2; }

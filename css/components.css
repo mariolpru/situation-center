@@ -179,7 +179,11 @@
 
 /* ============================ СТРАНИЦА НОВОСТИ ============================ */
 /* Шапка внутренних страниц (светлая, статичная) */
-.pagebar { padding: 28px 0; }
+.pagebar {
+  position: sticky; top: 0; z-index: 60; padding: 16px 0;
+  background: rgba(255, 255, 255, .82); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--c-line);
+}
 .pagebar__inner { display: flex; align-items: center; justify-content: space-between; gap: 32px; }
 .pagebar__menu { display: flex; gap: clamp(24px, 3.5vw, 50px); font-size: 17px; font-weight: 500; }
 .pagebar__menu a { color: var(--c-ink); transition: opacity .2s; }
@@ -511,12 +515,12 @@
 .footer__social a:hover { opacity: .7; transform: translateY(-2px); }
 
 /* ============================ МОДАЛКА ============================ */
-.modal { position: fixed; inset: 0; z-index: 100; display: none; }
-.modal.is-open { display: grid; place-items: center; }
-.modal__backdrop { position: absolute; inset: 0; background: rgba(10,12,14,.35); opacity: 0; transition: opacity .4s var(--ease-out); }
+.modal { position: fixed; inset: 0; z-index: 100; display: none; overflow-y: auto; overscroll-behavior: contain; }
+.modal.is-open { display: flex; padding-block: 24px; } /* flex + margin:auto у диалога = центр, а если выше экрана — скроллится, верх не обрезается */
+.modal__backdrop { position: fixed; inset: 0; background: rgba(10,12,14,.35); opacity: 0; transition: opacity .4s var(--ease-out); }
 .modal.is-open .modal__backdrop { opacity: 1; }
 .modal__dialog {
-  position: relative; z-index: 1; width: min(800px, 92vw);
+  position: relative; z-index: 1; width: min(800px, 92vw); margin: auto;
   /* сплошной цвет: rgba(22,32,38,.08) поверх белого, иначе просвечивает фон */
   background: #ecedee; border-radius: var(--r-xl);
   padding: clamp(28px, 4vw, 64px);
