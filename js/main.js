@@ -27,7 +27,7 @@ const ready = Promise.race([
     const dark = root.getAttribute("data-theme") === "dark";
     if (dark) root.removeAttribute("data-theme");
     else root.setAttribute("data-theme", "dark");
-    try { localStorage.setItem("sc-theme", dark ? "light" : "dark"); } catch (err) {}
+    try { sessionStorage.setItem("sc-theme", dark ? "light" : "dark"); } catch (err) {}
   }));
 })();
 
