@@ -95,17 +95,12 @@ h1, h2, h3, h4 {
 .btn--solid { --btn-bg: var(--c-red); --btn-bd: var(--c-red); --btn-fg: #fff; }
 .btn--solid:hover { --btn-bg: var(--c-red-600); --btn-bd: var(--c-red-600); }
 
-/* Круглая иконка-стрелка */
-.btn-circle {
-  width: 45px; height: 45px; flex: 0 0 45px;
-  border-radius: 50%; border: 5px solid var(--c-red);
-  display: inline-flex; align-items: center; justify-content: center;
-  color: var(--c-red);
-  transition: background-color var(--dur-fast) var(--ease-out),
-              color var(--dur-fast) var(--ease-out),
-              transform var(--dur-fast) var(--ease-out);
-}
-.btn-circle:hover { background: var(--c-red); color: #fff; transform: scale(1.06); }
+/* Круглая стрелка (компонент Frame 30 из Figma): круг — красный темы,
+   стрелка — белая на тёмном / тёмная на светлом (модификатор --dark) */
+.arrow-circle { width: 45px; height: 45px; flex: 0 0 45px; }
+.arrow-circle circle { stroke: var(--c-red); }
+.arrow-circle path { stroke: #fff; }
+.arrow-circle--dark path { stroke: var(--c-ink); }
 
 /* --- Reduced motion --- */
 @media (prefers-reduced-motion: reduce) {
