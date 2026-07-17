@@ -193,6 +193,79 @@ const ready = Promise.race([
 })();
 
 /* ------------------------------------------------------------------ *
+ * 4b. Страница «Все новости»: список из 10 и пагинация с окном
+ * ------------------------------------------------------------------ */
+(function newsListPage() {
+  const list = $("#newsList");
+  const pag = $("#pagination");
+  if (!list || !pag) return;
+
+  const TOTAL = 168; // страниц всего (как в макете)
+  let current = 1;
+
+  // демо-набор: 3 новости из макета, повторяем до 10 позиций
+  const ITEMS = [
+    { img: "assets/img/news-1.webp", date: "11 июл. 2026 г. 18:00",
+      title: "Получайте ежедневную подборку актуальных публикаций о строительстве в Москве" },
+    { img: "assets/img/news-2.webp", date: "11 июл. 2026 г. 17:50",
+      title: "Сергей Собянин поздравил жителей столицы с Днём московского транспорта" },
+    { img: "assets/img/news-3.webp", date: "11 июл. 2026 г. 16:30",
+      title: "Владимир Ефимов: более 1200 домов полностью расселили по программе реновации в Москве" },
+  ];
+
+  function renderList() {
+    const rows = [];
+    for (let n = 0; n < 10; n++) {
+      const it = ITEMS[n % 3];
+      rows.push(`<li class="news-item">
+        <a class="news-item__thumb" href="news.html" style="--img:url('../${it.img}')"></a>
+        <div class="news-item__body">
+          <time class="news-item__date">${it.date}</time>
+          <a class="news-item__title" href="news.html">${it.title}</a>
+        </div>
+      </li>`);
+    }
+    list.innerHTML = rows.join("");
+    if (!reduced) {
+      animate($$(".news-item", list), { opacity: [0, 1], transform: ["translateY(20px)", "translateY(0)"] },
+        { duration: .5, delay: stagger(.05), ease: [.16, 1, .3, 1] });
+    }
+  }
+
+  // окно пагинации: 1 2 … c-1 [c] c+1 … 167 168
+  function pages(c) {
+    const set = new Set([1, 2, c - 1, c, c + 1, TOTAL - 1, TOTAL]);
+    const arr = [...set].filter(n => n >= 1 && n <= TOTAL).sort((a, b) => a - b);
+    const out = [];
+    arr.forEach((n, i) => {
+      if (i && n - arr[i - 1] > 1) out.push("...");
+      out.push(n);
+    });
+    return out;
+  }
+
+  function renderPag() {
+    pag.innerHTML = pages(current).map(p =>
+      p === "..."
+        ? `<span class="pagination__item is-dots">...</span>`
+        : `<button class="pagination__item${p === current ? " is-active" : ""}" data-page="${p}" ${p === current ? 'aria-current="page"' : ""}>${p}</button>`
+    ).join("");
+  }
+
+  pag.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-page]");
+    if (!b || +b.dataset.page === current) return;
+    current = +b.dataset.page;
+    renderPag();
+    renderList();
+    list.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+  });
+
+  renderList();
+  renderPag();
+})();
+
+/* ------------------------------------------------------------------ *
  * 5. Панорама: разбор здания по этажам (киношно)
  * ------------------------------------------------------------------ */
 (function panorama() {
