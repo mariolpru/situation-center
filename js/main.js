@@ -46,6 +46,9 @@ const ready = Promise.race([
   dots.forEach(([x, y, d], i) => {
     const el = document.createElement("span");
     el.className = "dot";
+    // точки под зоной заголовка/лида (лево-верх) — глушим на мобилке (класс срабатывает
+    // только в @media ≤767: там контент прижат к верху и текст перекрывает эту область)
+    if (x <= 76 && y >= 10 && y <= 54) el.classList.add("dot--muted");
     // пульс — целиком CSS (transform/opacity): Safari рисовал box-shadow кляксами
     el.style.cssText = `left:${x}%;top:${y}%;width:${d}px;height:${d}px;margin:${-d/2}px 0 0 ${-d/2}px;` +
       `--pulse-dur:${(2.4 + (i % 4) * .4).toFixed(1)}s;--pulse-delay:${(i * .18).toFixed(2)}s`;

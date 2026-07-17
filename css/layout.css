@@ -38,6 +38,8 @@
   .pagebar .burger { display: flex; }
   .burger { display: flex; }
   .hero__cta, .topbar__cta { display: none; }
+  /* Скрыты nav+cta → прижимаем бургер к правому краю, как на десктопе */
+  .topbar__inner { justify-content: space-between; }
   .panorama__stage { grid-template-columns: 1fr; }
   .floor-nav { flex-direction: row; justify-content: center; order: 2; margin-top: 12px; }
 }
@@ -54,10 +56,16 @@
   .hero { padding: 10px; }
   .hero__card { min-height: 88vh; }
   .hero__nav { padding: 18px; gap: 16px; }
-  .hero__content { max-width: 100%; }
+  /* Заголовок+лид прижаты к логотипу сверху; факт «400 000» уходит вниз */
+  .hero__content { max-width: 100%; margin-top: 0; padding-top: 8px; }
   .hero__title br { display: none; }
   .hero__lead br { display: none; }
-  .hero__fact { position: static; text-align: left; justify-items: start; margin: 32px 18px 40px; }
+  .hero__more { display: none; } /* кнопка «Панорама центра» — на мобилке лишняя, есть в меню */
+  .hero__fact { position: static; text-align: left; justify-items: start; margin: auto 18px 40px; }
+
+  /* Меньше мигающих точек под текстом: тусклые и без пульсирующего кольца */
+  .hero__dots .dot--muted { opacity: .22; animation: none; }
+  .hero__dots .dot--muted::after { display: none; }
 
   .stats__grid { grid-template-columns: 1fr; gap: 28px; }
 
@@ -78,7 +86,7 @@
 
   .subscribe__form { grid-template-columns: 1fr; }
   .subscribe__form .field-error { grid-row: 2; }
-  .subscribe__form .btn { grid-column: 1; grid-row: 3; width: 100%; }
+  .subscribe__form .btn { grid-column: 1; grid-row: 3; width: 100%; margin-top: 16px; } /* отлепить кнопку от поля */
 
   .footer__links { grid-template-columns: 1fr; }
   .footer__bottom { flex-direction: column; align-items: flex-start; }
