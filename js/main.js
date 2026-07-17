@@ -46,14 +46,10 @@ const ready = Promise.race([
   dots.forEach(([x, y, d], i) => {
     const el = document.createElement("span");
     el.className = "dot";
-    el.style.cssText = `left:${x}%;top:${y}%;width:${d}px;height:${d}px;margin:${-d/2}px 0 0 ${-d/2}px`;
+    // пульс — целиком CSS (transform/opacity): Safari рисовал box-shadow кляксами
+    el.style.cssText = `left:${x}%;top:${y}%;width:${d}px;height:${d}px;margin:${-d/2}px 0 0 ${-d/2}px;` +
+      `--pulse-dur:${(2.4 + (i % 4) * .4).toFixed(1)}s;--pulse-delay:${(i * .18).toFixed(2)}s`;
     wrap.appendChild(el);
-    if (reduced) return;
-    // бесконечная пульсация со сдвигом фазы
-    animate(el,
-      { scale: [1, 1.6, 1], opacity: [1, .55, 1], boxShadow: [
-        "0 0 0 0 rgba(239,62,74,.5)", "0 0 0 14px rgba(239,62,74,0)", "0 0 0 0 rgba(239,62,74,0)"] },
-      { duration: 2.4 + (i % 4) * .4, repeat: Infinity, delay: i * .18, ease: "easeInOut" });
   });
 })();
 
