@@ -85,15 +85,19 @@ h1, h2, h3, h4 {
               color var(--dur-fast) var(--ease-out),
               transform var(--dur-fast) var(--ease-out);
 }
-/* Компонент Button из Figma:
-   Default — красная обводка 5px, текст наследует контекст;
-   Hover  — заливка белым, текст #161f26, без обводки */
-.btn--red-outline { --btn-bd: var(--btn-red); --btn-fg: currentColor; }
-.btn--red-outline:hover { --btn-bg: #fff; --btn-bd: #fff; --btn-fg: #161f26; }
+/* Кнопка с обводкой — цвета зависят от темы (см. tokens.css):
+   светлая: бордер BE171E / hover заливка BE171E + белый текст;
+   тёмная: бордер EF3E4A / hover белая заливка + тёмный текст */
+.btn--red-outline { --btn-bd: var(--btn-bd-color); --btn-fg: currentColor; }
+.btn--red-outline:hover {
+  --btn-bg: var(--btn-hover-bg);
+  --btn-bd: var(--btn-hover-bg);
+  --btn-fg: var(--btn-hover-fg);
+}
 
 /* Сплошная красная (кнопка «Записаться» в модалке) */
-.btn--solid { --btn-bg: var(--btn-red); --btn-bd: var(--btn-red); --btn-fg: #fff; }
-.btn--solid:hover { --btn-bg: #d92f3b; --btn-bd: #d92f3b; }
+.btn--solid { --btn-bg: var(--c-red); --btn-bd: var(--c-red); --btn-fg: #fff; }
+.btn--solid:hover { --btn-bg: var(--c-red-600); --btn-bd: var(--c-red-600); }
 
 /* Круглая стрелка (компонент Frame 30 из Figma): круг — красный темы,
    стрелка — белая на тёмном / тёмная на светлом (модификатор --dark) */

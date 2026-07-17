@@ -6,7 +6,11 @@
   /* --- Цвета: СВЕТЛАЯ тема (макет Desktop-4) — по умолчанию --- */
   --c-red: #BE171E;          /* тёмно-красный: точки, круги, каретка, лого */
   --c-red-600: #9e1218;
-  --btn-red: #EF3E4A;        /* кнопки — всегда яркие, по компоненту Button */
+  /* Кнопки светлой темы: default — бордер BE171E, текст 09131C;
+     hover — заливка BE171E, текст белый */
+  --btn-bd-color: #BE171E;
+  --btn-hover-bg: #BE171E;
+  --btn-hover-fg: #ffffff;
   --c-black: #000000;
   --c-ink: #09131c;          /* основной тёмный текст */
   --c-ink-70: rgba(9, 19, 28, .7);
@@ -75,6 +79,10 @@
 [data-theme="dark"] {
   --c-red: #EF3E4A;
   --c-red-600: #d92f3b;
+  /* Кнопки тёмной темы: яркий бордер, hover — белая заливка (компонент Desktop-2) */
+  --btn-bd-color: #EF3E4A;
+  --btn-hover-bg: #ffffff;
+  --btn-hover-fg: #161f26;
 
   --hero-bg: #08131b;
   --hero-fg: #ffffff;
