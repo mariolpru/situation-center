@@ -376,6 +376,10 @@
   position: relative; width: 100%; aspect-ratio: 1498 / 1010;
   transform-origin: 50% 50%;
   transition: transform var(--dur-slow) var(--ease-cine);
+  /* После зума бокс здания (в основном прозрачный) накрывает кнопки этажей и
+     съедает клики — переключение «ломается». Событий не принимаем, кликабельны
+     только точки-зоны, у них pointer-events возвращается ниже. */
+  pointer-events: none;
 }
 @media (prefers-reduced-motion: reduce) { .building { transition: none; } }
 .floor {
@@ -391,7 +395,8 @@
 .floor--roof   { left: 32.2%; top: 2.9%; width: 48.8%; z-index: 3; } /* крыша с башней */
 
 /* Кнопки этажей (Figma: 45px, #161f26, активная #ef3e4a) */
-.floor-nav { display: flex; flex-direction: column; gap: 14px; align-self: start; margin-top: 4%; }
+/* z-index: план после зума заезжает на кнопки — они должны остаться сверху */
+.floor-nav { display: flex; flex-direction: column; gap: 14px; align-self: start; margin-top: 4%; position: relative; z-index: 5; }
 .floor-nav__btn {
   width: 45px; height: 45px; border-radius: 50%;
   background: #161f26; color: #fff; font-weight: 600; font-size: 20px;
