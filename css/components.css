@@ -251,6 +251,20 @@
 .field-wrap { display: grid; gap: 0; }
 .field-wrap .field { width: 100%; }
 
+/* ---------- Флоу экскурсии: вид экскурсии ---------- */
+/* 2 крупные кнопки, а не сетка в 5 колонок как у слотов: названия длинные */
+.types { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.type-card {
+  padding: 22px 20px; border-radius: var(--r-md);
+  font-size: var(--fs-card); font-weight: 500; line-height: 1.2;
+  color: var(--c-ink); text-align: left;
+  background: rgba(8, 19, 27, .08);
+  box-shadow: inset 0 0 0 2px transparent;
+  transition: background-color .2s, color .2s, box-shadow .2s;
+}
+.type-card:hover { box-shadow: inset 0 0 0 2px #be171e; cursor: pointer; }
+.type-card.is-selected { background: #be171e; color: #fff; }
+
 /* ---------- Флоу экскурсии: календарь ---------- */
 .cal { width: 100%; }
 .cal__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
@@ -305,10 +319,10 @@
 .newslist__list { margin-top: clamp(24px, 2vw, 30px); }
 .newslist .news__list { gap: 40px; }
 
-/* Сетка «Все события»: 3 колонки, карточки — те же ev-card, что на главной */
+/* Сетка «Все события»: 4 колонки, карточки — те же ev-card, что на главной */
 .eventslist__grid {
   margin-top: clamp(24px, 2vw, 30px);
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
 }
 
 /* Пагинация (из макета: ячейка 50×38 r20; активная — заливка BE171E,
@@ -356,7 +370,14 @@
 }
 
 /* Здание из слоёв-этажей (геометрия из Figma: секция 1498×1010) */
-.building { position: relative; width: 100%; aspect-ratio: 1498 / 1010; }
+/* Зум на выбранном этаже: transform ставит apply() в js, анимирует этот транзишен.
+   .building Motion не анимирует, поэтому Safari-бага с двойным проигрыванием тут нет. */
+.building {
+  position: relative; width: 100%; aspect-ratio: 1498 / 1010;
+  transform-origin: 50% 45%;
+  transition: transform var(--dur-slow) var(--ease-cine);
+}
+@media (prefers-reduced-motion: reduce) { .building { transition: none; } }
 .floor {
   position: absolute;
   /* Анимацию сдвига этажей ведёт Motion (js). CSS-transition убран: в Safari он
@@ -508,7 +529,8 @@
 .footer__links a:hover { text-decoration-color: currentColor; }
 .footer__links li + li { margin-top: 0; }
 .footer__bottom { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-.footer__logo { width: min(400px, 60vw); height: auto; }
+/* Лого-локап из Figma (3330:144): 321×48 — блок ниже прежнего */
+.footer__logo { width: min(321px, 62vw); height: auto; }
 .footer__social { display: flex; gap: 32px; }
 .footer__social a { display: inline-flex; width: 32px; height: 32px; align-items: center; justify-content: center; transition: opacity .2s, transform .2s; }
 .footer__social a img { max-width: 24px; max-height: 24px; object-fit: contain; }

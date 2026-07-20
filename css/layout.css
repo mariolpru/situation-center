@@ -25,11 +25,17 @@
   .footer__links { grid-template-columns: repeat(2, 1fr); }
 }
 
+/* Лесенка «Все события»: 4 → 3 → 2 → 1 (без резкого прыжка 4→2) */
 @media (max-width: 1279px) {
+  .eventslist__grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 1024px) {
   .eventslist__grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 600px) {
   .eventslist__grid { grid-template-columns: 1fr; }
+  /* «Образовательная» в две колонки не помещается — рвётся на 3 строки */
+  .types { grid-template-columns: 1fr; }
 }
 
 /* ============================ ≤ 1024 ============================ */

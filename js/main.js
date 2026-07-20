@@ -287,7 +287,7 @@ function setupPagination(pag, total, onChange) {
 
   function renderGrid() {
     const cells = [];
-    for (let n = 0; n < 18; n++) {
+    for (let n = 0; n < 16; n++) {   // 16 = ровно 4 полных ряда по 4 карточки
       const c = CARDS[n % 3];
       cells.push(`<a class="ev-card" href="event.html" style="--img:url('../${c.img}')">
         ${RIPPLE}
@@ -317,10 +317,18 @@ function setupPagination(pag, total, onChange) {
   if (!building) return;
   const floors = $$(".floor", building);
   const btns = $$("[data-floor-btn]");
-  const OFFSET = 300; // px на «ступень» — старт по ТЗ, правится легко
-  let current = 0;    // 0 = здание собрано
+  const OFFSET = 300;      // px на «ступень» — старт по ТЗ, правится легко
+  const ZOOM_DESK = 1.08;  // больше — сад (этаж во всю ширину) обрежется об overflow сцены
+  const ZOOM_MOB  = 1.5;   // на телефоне план мелкий: зум увеличивает и глифы точек
+  let current = 0;         // 0 = здание собрано
 
   function apply(level) {
+    // лёгкий наезд на выбранный этаж; level=0 — возврат к исходному масштабу.
+    // Здесь можно CSS-транзишеном: .building, в отличие от .floor, Motion не анимирует,
+    // так что двойного проигрывания в Safari не будет.
+    const mob = window.matchMedia("(max-width: 1024px)").matches;
+    building.style.transform = `scale(${level === 0 ? 1 : (mob ? ZOOM_MOB : ZOOM_DESK)})`;
+
     floors.forEach(f => {
       const fl = +f.dataset.floor;
       // level=0 → собранное здание; иначе: выше выбранного → вверх, ниже → вниз
@@ -554,7 +562,15 @@ const closeAll = () => {
     <div class="modal__dialog" role="dialog" aria-modal="true" aria-label="Запись на экскурсию">
       ${CLOSE_BTN}
 
-      <div class="modal__state" data-state="date">
+      <div class="modal__state" data-state="type">
+        <h2 class="eyebrow modal__title">Выберите вид экскурсии</h2>
+        <div class="types">
+          <button type="button" class="type-card" data-type="Образовательная">Образовательная</button>
+          <button type="button" class="type-card" data-type="Информационная">Информационная</button>
+        </div>
+      </div>
+
+      <div class="modal__state" data-state="date" hidden>
         <h2 class="eyebrow modal__title">Выберите дату экскурсии</h2>
         <div class="cal">
           <div class="cal__head">
@@ -601,7 +617,7 @@ const closeAll = () => {
 
   const today = new Date(); today.setHours(0, 0, 0, 0);
   let view = new Date(today.getFullYear(), today.getMonth(), 1);
-  const pick = { date: null, hour: null, count: 1 };
+  const pick = { type: null, date: null, hour: null, count: 1 };
 
   /* Детерминированный псевдорандом (FNV-1a): занятость одного и того же дня
      и слота не «прыгает» между перерисовками, но выглядит живой */
@@ -654,6 +670,9 @@ const closeAll = () => {
   }
 
   modal.addEventListener("click", (e) => {
+    const type = e.target.closest("[data-type]");
+    if (type) { pick.type = type.dataset.type; step("date"); return; }
+
     const nav = e.target.closest(".cal__nav");
     if (nav) { view.setMonth(view.getMonth() + Number(nav.dataset.dir)); renderCal(); return; }
 
@@ -672,7 +691,8 @@ const closeAll = () => {
     }
     if (e.target.closest("[data-count-next]")) {
       // сводка: на шаге формы иначе не видно, что именно выбрано
-      $(".modal__summary", modal).textContent = `${fmtDate(pick.date)} · ${pick.hour}:00 · ${pick.count} чел.`;
+      $(".modal__summary", modal).textContent =
+        `${pick.type} · ${fmtDate(pick.date)} · ${pick.hour}:00 · ${pick.count} чел.`;
       step("form");
     }
   });
@@ -684,7 +704,7 @@ const closeAll = () => {
   });
 
   modal.addEventListener("modal:reset", () => {
-    pick.date = null; pick.hour = null; pick.count = 1;
+    pick.type = null; pick.date = null; pick.hour = null; pick.count = 1;
     view = new Date(today.getFullYear(), today.getMonth(), 1);
     renderCal(); renderCount();
   });
