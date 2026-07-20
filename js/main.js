@@ -318,16 +318,36 @@ function setupPagination(pag, total, onChange) {
   const floors = $$(".floor", building);
   const btns = $$("[data-floor-btn]");
   const OFFSET = 300;      // px на «ступень» — старт по ТЗ, правится легко
-  const ZOOM_DESK = 1.08;  // больше — сад (этаж во всю ширину) обрежется об overflow сцены
-  const ZOOM_MOB  = 1.5;   // на телефоне план мелкий: зум увеличивает и глифы точек
+  const FILL_DESK = 0.92;  // доля свободной ширины сцены, которую занимает выбранный этаж
+  const FILL_MOB  = 1;     // на телефоне план должен заполнять экран целиком
+  const stage = building.closest(".panorama__stage");
   let current = 0;         // 0 = здание собрано
 
+  /* Наезд на выбранный этаж. Простой scale() не подходит: этажи разной ширины и лежат
+     в разных местах бокса здания (жилой и крыша — 48.8% ширины со сдвигом вправо),
+     поэтому общий масштаб уводит план вбок и на переключатели. Считаем масштаб под
+     конкретный этаж и сдвигаем его центр в центр сцены. */
+  function zoomTo(level) {
+    if (level === 0) { building.style.transform = ""; return; }
+    const floor = floors.find(f => +f.dataset.floor === level);
+    if (!floor || !floor.offsetWidth) return;
+    const bw = building.clientWidth, bh = building.clientHeight;
+    const fw = floor.offsetWidth, fh = floor.offsetHeight;
+    const fill = window.matchMedia("(max-width: 1024px)").matches ? FILL_MOB : FILL_DESK;
+    // по высоте ограничиваемся сценой (минус фейд маски у краёв), чтобы план не наезжал
+    // на кнопки этажей и не обрезался
+    const availH = (stage ? stage.clientHeight : bh) - 128;
+    const z = Math.max(1, Math.min(fill * bw / fw, availH / fh));
+    // сдвиг, приводящий центр этажа в центр сцены (transform-origin: 50% 50%)
+    const dx = (bw / 2 - (floor.offsetLeft + fw / 2)) * z;
+    const dy = (bh / 2 - (floor.offsetTop + fh / 2)) * z;
+    building.style.transform = `translate(${dx}px, ${dy}px) scale(${z})`;
+  }
+
   function apply(level) {
-    // лёгкий наезд на выбранный этаж; level=0 — возврат к исходному масштабу.
-    // Здесь можно CSS-транзишеном: .building, в отличие от .floor, Motion не анимирует,
+    // Зум CSS-транзишеном: .building, в отличие от .floor, Motion не анимирует,
     // так что двойного проигрывания в Safari не будет.
-    const mob = window.matchMedia("(max-width: 1024px)").matches;
-    building.style.transform = `scale(${level === 0 ? 1 : (mob ? ZOOM_MOB : ZOOM_DESK)})`;
+    zoomTo(level);
 
     floors.forEach(f => {
       const fl = +f.dataset.floor;
@@ -353,6 +373,13 @@ function setupPagination(pag, total, onChange) {
     current = current === level ? 0 : level; // повторный клик — собрать здание
     apply(current);
   }));
+
+  // масштаб считается от размеров сцены — пересчитываем при ресайзе/повороте
+  let resizeT;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeT);
+    resizeT = setTimeout(() => zoomTo(current), 150);
+  });
 
   // Точки-зоны 2-го этажа: 6 маркеров, по 2 ведут на один из трёх попапов.
   // Пины взяты из Figma (компонент 3272:50) целиком, 1:1 — вместе с кругом и бордером;

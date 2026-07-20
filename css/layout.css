@@ -47,7 +47,9 @@
   /* Скрыты nav+cta → прижимаем бургер к правому краю, как на десктопе */
   .topbar__inner { justify-content: space-between; }
   .panorama__stage { grid-template-columns: 1fr; }
-  .floor-nav { flex-direction: row; justify-content: center; order: 2; margin-top: 12px; }
+  /* row-reverse: в разметке кнопки идут 3-2-1 (сверху вниз на десктопе),
+     на телефоне их нужно читать слева направо как 1-2-3 */
+  .floor-nav { flex-direction: row-reverse; justify-content: center; order: 2; margin-top: 12px; }
 }
 
 /* ============================ MOBILE ≤ 767 ============================ */

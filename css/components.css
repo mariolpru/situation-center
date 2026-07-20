@@ -374,7 +374,7 @@
    .building Motion не анимирует, поэтому Safari-бага с двойным проигрыванием тут нет. */
 .building {
   position: relative; width: 100%; aspect-ratio: 1498 / 1010;
-  transform-origin: 50% 45%;
+  transform-origin: 50% 50%;
   transition: transform var(--dur-slow) var(--ease-cine);
 }
 @media (prefers-reduced-motion: reduce) { .building { transition: none; } }
