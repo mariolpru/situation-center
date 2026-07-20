@@ -327,12 +327,23 @@ function setupPagination(pag, total, onChange) {
      в разных местах бокса здания (жилой и крыша — 48.8% ширины со сдвигом вправо),
      поэтому общий масштаб уводит план вбок и на переключатели. Считаем масштаб под
      конкретный этаж и сдвигаем его центр в центр сцены. */
+  let zoomRetry = 0;
   function zoomTo(level) {
-    if (level === 0) { building.style.transform = ""; return; }
+    if (level === 0) { building.style.transform = ""; zoomRetry = 0; return; }
     const floor = floors.find(f => +f.dataset.floor === level);
-    if (!floor || !floor.offsetWidth) return;
+    if (!floor) return;
     const bw = building.clientWidth, bh = building.clientHeight;
     const fw = floor.offsetWidth, fh = floor.offsetHeight;
+    // картинки этажей ленивые (loading="lazy"): пока не загрузились, размеры нулевые
+    // и масштаб не посчитать — повторяем по загрузке, иначе зум просто не применится
+    if (!fw || !fh) {
+      const img = floor.querySelector("img");
+      const again = () => { if (current === level) zoomTo(level); };
+      if (img && !img.complete) img.addEventListener("load", again, { once: true });
+      else if (zoomRetry++ < 10) requestAnimationFrame(again); // ждём раскладку, но не бесконечно
+      return;
+    }
+    zoomRetry = 0;
     const fill = window.matchMedia("(max-width: 1024px)").matches ? FILL_MOB : FILL_DESK;
     // по высоте ограничиваемся сценой (минус фейд маски у краёв), чтобы план не наезжал
     // на кнопки этажей и не обрезался
